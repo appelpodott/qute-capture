@@ -1,52 +1,19 @@
 #+TITLE:qute-capture
-Qutebrowser userscript for filing the current webpage into an org-mode file
-
-* Implemented
- - Insert plain entries with page title and url under an arbitrary heading
- - Select an existing entry using dmenu and jump to that page
- - Basic regexp filtering -- Display only those entries which contain a URL
- - Collect any selected text and the date visited
- - Edit the entry in your favourite text editor
-
-* Planned
- - The current version is feature complete, although the design could
-   certainly be improved
- - Todo lists or other org features are a possibility if people are
-   interested in them
-
-* Non-features
- - A complete interface to org-mode in Qutebrowser -- My only use for
-   this script is to unify bookmarks and my org lists.
- - A complete parser for bookmarkish data -- Org is extremely free
-   form, this is a great strength, but it means that some imposed
-   structure must be accepted from non-interactive tools. Trying to
-   accommodate every possible format a user might desire is
-   impossible.
+Qutebrowser userscript captures url/selected text and appends to org file.
 
 * Installation
- 1. Place this script in the =~/.local/share/qutebrowser/userscripts= folder.
- 2. Add a binding to your Qutebrowser config.py, e.g. I use =config.bind(',b', 'spawn --userscript qute-capture read -f ~/read-later.org -H Read-Later)= 
-    - Be careful about spaces and other odd characters, if in doubt, wrap it in escaped quotes.
-    - Alternatively, see 3. below.
- 3. (Optional) To make invocation simpler edit the script to point
-    =ORG_FILE=, =HEADING_PATH=, and =EDITOR= to the right places.
-    - The default file+heading is =~/read-later.org+Read Later=
-    - The default editor is vi in xterm.  Probably not what you want as org-user.
+1. Clone and link to userscripts
+#+begin_src shell
+  cd ~/.local/share/qutebrowser/userscripts/
+  git clone https://github.com/appelpodott/qute-capture.git /path/to/qute-capture
+  ln -s /path/to/qute-capture/qute-capture qute-capture
+#+end_src
 
-* Use
- - To create a new entry: =qute-capture write=
-   + To invoke an editor on the new bookmark before saving use the -e
-     flag. -e takes an option argument which is a shell command to be
-     executed.
- - To jump to an entry: =qute-capture read=
- - To delete an entry: =qute-capture rm=
- - See the source for other settings
-
-* Dependencies
- - PyOrgMode -- I recommend getting it from github, rather than pip
- - Dmenu
- - I hope Qutebrowser goes without saying
+2. Add binding to your Qutebrowser config.py
+#+begin_src python
+config.bind(',m', 'spawn --userscript qute-capture --file ~/Notes/reading-list.org)
+#+end_src
 
 * Acknowledgements
- - Qutebrowser, for being just about the only usable modern browser
- - qute-pass, from which I shamelessly copied chunks of code
+ - This repository is a fork of [[https://github.com/alcah/qute-capture][qute-capture]], which also has a [[https://wiki.archlinux.org/index.php/Dmenu][dmenu]] integration for reading org entries.
+ - My workflow only requires the write capabilities of [[https://github.com/alcah/qute-capture][qute-capture]], therefore I removed the external dependencies.
