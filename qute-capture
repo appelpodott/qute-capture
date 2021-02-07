@@ -23,9 +23,9 @@ def qute_command(command):
         fifo.flush
 
 
-def format_node(heading, body, tag):
-    node = "* {h}        :{t}:\n  {b}\n  CAPTURED:{c}\n".format(
-        h=heading, b=body, t=tag, c=time.strftime(TIME_FORMAT)
+def format_node(heading, url, body, tag):
+    node = "* {h}        :{t}:\n {u}\n {b}\n  CAPTURED:{c}\n".format(
+        h=heading, t=tag, u=url, b=body, c=time.strftime(TIME_FORMAT)
     )
     return node
 
@@ -39,7 +39,7 @@ def main(args):
     url = os.getenv("QUTE_URL")
     content = os.getenv("QUTE_SELECTED_TEXT")
 
-    new_node = format_node(title, content, "BROWSER")
+    new_node = format_node(title, url, content, "BROWSER")
 
     f = open(os.path.expanduser(args.file), "a")
     f.write(new_node)
